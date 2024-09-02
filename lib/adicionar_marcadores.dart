@@ -8,30 +8,22 @@ class AddMarkerPage extends StatefulWidget {
 
 class _AddMarkerPageState extends State<AddMarkerPage> {
   final TextEditingController _nomeController = TextEditingController();
-  TimeOfDay _startTime = TimeOfDay(hour: 8, minute: 0);
-  TimeOfDay _endTime = TimeOfDay(hour: 17, minute: 0);
+  Future<void> _addMateria() async {
+    if (_nomeController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('O nome da matéria é obrigatório')),
+      );
+      return;
+    }
 
-  Future<void> _selectTime(BuildContext context, bool isStart) async {
-    final TimeOfDay? picked = await showTimePicker(
-      context: context,
-      initialTime: isStart ? _startTime : _endTime,
-      builder: (BuildContext context, Widget? child) {
-        return MediaQuery(
-          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
-          child: child!,
-        );
-      },
+    final novaMateria = Materia(
+      nome: _nomeController.text,
+      dataInsert: DateTime.now(),
+      isLastSelected: false,
     );
 
-    if (picked != null && picked != (isStart ? _startTime : _endTime)) {
-      setState(() {
-        if (isStart) {
-          _startTime = picked;
-        } else {
-          _endTime = picked;
-        }
-      });
-    }
+    await Materia.insertMateria(novaMateria);
+    Navigator.pop(context, true); // Retorna à tela anterior e sinaliza para recarregar a lista
   }
 
   Future<void> _addMateria() async {
@@ -75,26 +67,6 @@ class _AddMarkerPageState extends State<AddMarkerPage> {
                 labelText: 'Nome da Matéria',
                 border: OutlineInputBorder(),
               ),
-            ),
-            SizedBox(height: 20),
-            Text(
-              'Início: ${_startTime.format(context)}',
-              style: TextStyle(fontSize: 16),
-            ),
-            SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: () => _selectTime(context, true),
-              child: Text('Escolher Horário de Início'),
-            ),
-            SizedBox(height: 20),
-            Text(
-              'Término: ${_endTime.format(context)}',
-              style: TextStyle(fontSize: 16),
-            ),
-            SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: () => _selectTime(context, false),
-              child: Text('Escolher Horário de Término'),
             ),
             SizedBox(height: 20),
             ElevatedButton(
