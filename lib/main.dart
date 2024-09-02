@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'models/Usuario.dart';
 import 'models/Materia.dart';
@@ -29,6 +31,9 @@ class MyApp extends StatelessWidget {
   class _StudyHomePage extends State<StudyHomePage> {
     Materia? materia;
     SessaoMateria? sessaoMateria;
+    DateTime? cronometro = DateTime(0,0,0,0,0,0);
+    Timer? _timer;
+    int numero = 1;
 
     @override
     void initState() {
@@ -43,34 +48,64 @@ class MyApp extends StatelessWidget {
       });
     }
 
+    void _startTimer() {
+      _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+        setState(() {
+          cronometro = cronometro?.add(Duration(seconds: 1));
+        });
+      });
+    }
+
+    void _pauseTimer() {
+      setState(() {
+        _timer?.cancel(); // Cancel the timer to pause it
+      });
+    }
+
+    Future<void> startSessaoMateria(bool idle)async {
+      DateTime now = DateTime.now();
+      SessaoMateria sessao = SessaoMateria(startTime: now, idle: idle, idUsuario: 2, idMateria: materia?.id);
+
+      setState(() {
+        sessaoMateria = sessao;
+      });
+    }
+
+    Future<void> closeSessaoMateria() async{
+      DateTime now = DateTime.now();
+
+      SessaoMateria? updatedSessaoMateria = sessaoMateria;
+      updatedSessaoMateria?.endTime = now;
+      //a definir depois
+      updatedSessaoMateria?.quality = 4;
+      await SessaoMateria.insertSessaoMateria(updatedSessaoMateria!);
+      setState(() {
+        sessaoMateria = updatedSessaoMateria;
+      });
+    }
+
     // INCOMPLETOS
-    // void startCounter(){
-    //   DateTime now = DateTime.now();
-    //   SessaoMateria sessao = SessaoMateria(startTime: now, idle: false, idUsuario: 1, idMateria: materia?.id);
-    //
-    //   setState(() {
-    //     sessaoMateria = sessao;
-    //   });
-    // }
-    //
-    // void pauseCounter() async{
-    //   DateTime now = DateTime.now();
-    //
-    //   sessaoMateria?.endTime = now;
-    //   sessaoMateria?.quality = 4;
-    //   await SessaoMateria.insertSessaoMateria(sessaoMateria!);
-    //   setState(() {
-    //     sessaoMateria = SessaoMateria(startTime: now, idle: true, idUsuario: 1, idMateria: materia?.id);
-    //   });
-    // }
-    //
-    // void stopCounter() async{
-    //   DateTime now = DateTime.now();
-    //
-    //   sessaoMateria?.endTime = now;
-    //   sessaoMateria?.quality = 4;
-    //   await SessaoMateria.insertSessaoMateria(sessaoMateria!);
-    // }
+    Future<void> startCounter()async {
+      await startSessaoMateria(false);
+      _startTimer();
+    }
+
+    Future<void> pauseCounter() async{
+      await closeSessaoMateria();
+      await startSessaoMateria(true);
+      _pauseTimer();
+    }
+
+    Future<void> unPauseCounter() async{
+      await closeSessaoMateria();
+      await startSessaoMateria(false);
+      _startTimer();
+    }
+
+    Future<void> stopCounter() async{
+      await closeSessaoMateria();
+      _pauseTimer();
+    }
 
     @override
     Widget build(BuildContext context) {
@@ -147,7 +182,7 @@ class MyApp extends StatelessWidget {
                 ),
                 SizedBox(height: 20),
                 Text(
-                  '00:00',
+                  '${cronometro!.minute.toString().padLeft(2, '0')}:${cronometro!.second.toString().padLeft(2, '0')}',
                   style: TextStyle(
                     fontSize: 48,
                     fontWeight: FontWeight.bold,
@@ -172,10 +207,44 @@ class MyApp extends StatelessWidget {
                 OutlinedButton(
                   onPressed: () async {
                     // Navega para a tela de marcadores
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => MarkersPage()),
-                    );
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(builder: (context) => MarkersPage()),
+                    // );
+
+                    switch (numero) {
+                      case 1:
+                        await startCounter();
+                        print(await (SessaoMateria.getSessoesMateria()));
+                        print(sessaoMateria?.startTime);
+                        print(sessaoMateria?.endTime);
+                        print(sessaoMateria?.idle);
+                        break;
+                      case 2:
+                        await pauseCounter();
+                        SessaoMateria? lastAdded = await SessaoMateria.getSessaoMateriaById(numero+2);
+                        print(lastAdded?.startTime);
+                        print(lastAdded?.endTime);
+                        print(lastAdded?.idle);
+                        break;
+                      case 3:
+                        await unPauseCounter();
+                        SessaoMateria? lastAdded = await SessaoMateria.getSessaoMateriaById(numero+2);
+                        print(lastAdded?.startTime);
+                        print(lastAdded?.endTime);
+                        print(lastAdded?.idle);
+                        break;
+                      case 4:
+                        await stopCounter();
+                        SessaoMateria? lastAdded = await SessaoMateria.getSessaoMateriaById(numero+2);
+                        print(lastAdded?.startTime);
+                        print(lastAdded?.endTime);
+                        print(lastAdded?.idle);
+                        break;
+                    }
+                    setState(() {
+                      numero+=1;
+                    });
 
                     // print("Iniciando");
                     // await testCRUD();
