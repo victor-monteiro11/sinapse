@@ -33,6 +33,7 @@ class MyApp extends StatelessWidget {
     SessaoMateria? sessaoMateria;
     DateTime? cronometro = DateTime(0,0,0,0,0,0);
     Timer? _timer;
+    String status = '';
     int numero = 1;
 
     @override
@@ -87,6 +88,10 @@ class MyApp extends StatelessWidget {
     // INCOMPLETOS
     Future<void> startCounter()async {
       await startSessaoMateria(false);
+      setState(() {
+        status='iniciado';
+        cronometro = DateTime(0,0,0,0,0,0);
+      });
       _startTimer();
     }
 
@@ -94,17 +99,27 @@ class MyApp extends StatelessWidget {
       await closeSessaoMateria();
       await startSessaoMateria(true);
       _pauseTimer();
+      setState(() {
+        status='pausado';
+      });
     }
 
     Future<void> unPauseCounter() async{
       await closeSessaoMateria();
       await startSessaoMateria(false);
       _startTimer();
+      setState(() {
+        status='continuado';
+      });
     }
 
     Future<void> stopCounter() async{
       await closeSessaoMateria();
       _pauseTimer();
+      _timer?.cancel();
+      setState(() {
+        status='parado';
+      });
     }
 
     @override
@@ -186,13 +201,20 @@ class MyApp extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 48,
                     fontWeight: FontWeight.bold,
-                    color: Colors.grey[700],
+                    color: status != 'parado' ? Colors.grey[700] : Colors.red,
                   ),
                 ),
                 SizedBox(height: 20),
                 ElevatedButton(
-                  onPressed: () {
-                    // Ação de iniciar sinapse
+                  onPressed: () async {
+                    if(status == '' || status == 'parado') {
+                      await startCounter();
+                    } else if (status == 'iniciado' || status == 'continuado') {
+                      await pauseCounter();
+                    } else if (status == 'pausado') {
+                      await unPauseCounter();
+                    }
+
                   },
                   style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.symmetric(horizontal: 60, vertical: 15),
@@ -212,39 +234,9 @@ class MyApp extends StatelessWidget {
                     //   MaterialPageRoute(builder: (context) => MarkersPage()),
                     // );
 
-                    switch (numero) {
-                      case 1:
-                        await startCounter();
-                        print(await (SessaoMateria.getSessoesMateria()));
-                        print(sessaoMateria?.startTime);
-                        print(sessaoMateria?.endTime);
-                        print(sessaoMateria?.idle);
-                        break;
-                      case 2:
-                        await pauseCounter();
-                        SessaoMateria? lastAdded = await SessaoMateria.getSessaoMateriaById(numero+2);
-                        print(lastAdded?.startTime);
-                        print(lastAdded?.endTime);
-                        print(lastAdded?.idle);
-                        break;
-                      case 3:
-                        await unPauseCounter();
-                        SessaoMateria? lastAdded = await SessaoMateria.getSessaoMateriaById(numero+2);
-                        print(lastAdded?.startTime);
-                        print(lastAdded?.endTime);
-                        print(lastAdded?.idle);
-                        break;
-                      case 4:
-                        await stopCounter();
-                        SessaoMateria? lastAdded = await SessaoMateria.getSessaoMateriaById(numero+2);
-                        print(lastAdded?.startTime);
-                        print(lastAdded?.endTime);
-                        print(lastAdded?.idle);
-                        break;
+                    if (status == 'continuado' || status == 'iniciado' || status == 'pausado') {
+                    await stopCounter();
                     }
-                    setState(() {
-                      numero+=1;
-                    });
 
                     // print("Iniciando");
                     // await testCRUD();
