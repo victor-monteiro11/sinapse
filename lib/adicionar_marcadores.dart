@@ -8,6 +8,23 @@ class AddMarkerPage extends StatefulWidget {
 
 class _AddMarkerPageState extends State<AddMarkerPage> {
   final TextEditingController _nomeController = TextEditingController();
+  Future<void> _addMateria() async {
+    if (_nomeController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('O nome da matéria é obrigatório')),
+      );
+      return;
+    }
+
+    final novaMateria = Materia(
+      nome: _nomeController.text,
+      dataInsert: DateTime.now(),
+      isLastSelected: false,
+    );
+
+    await Materia.insertMateria(novaMateria);
+    Navigator.pop(context, true); // Retorna à tela anterior e sinaliza para recarregar a lista
+  }
 
   Future<void> _addMateria() async {
     if (_nomeController.text.isEmpty) {
