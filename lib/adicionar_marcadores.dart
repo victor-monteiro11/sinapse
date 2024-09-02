@@ -37,7 +37,7 @@ class _AddMarkerPageState extends State<AddMarkerPage> {
             Navigator.pop(context);
           },
         ),
-        title: Text('Adicionar Matéria'),
+        title: Text('Adicionar Matéria '),
         centerTitle: true,
       ),
       body: Padding(
