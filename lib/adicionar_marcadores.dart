@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'models/materia.dart';
 
 class AddMarkerPage extends StatefulWidget {
   @override
@@ -6,6 +7,7 @@ class AddMarkerPage extends StatefulWidget {
 }
 
 class _AddMarkerPageState extends State<AddMarkerPage> {
+  final TextEditingController _nomeController = TextEditingController();
   TimeOfDay _startTime = TimeOfDay(hour: 8, minute: 0);
   TimeOfDay _endTime = TimeOfDay(hour: 17, minute: 0);
 
@@ -32,6 +34,24 @@ class _AddMarkerPageState extends State<AddMarkerPage> {
     }
   }
 
+  Future<void> _addMateria() async {
+    if (_nomeController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('O nome da matéria é obrigatório')),
+      );
+      return;
+    }
+
+    final novaMateria = Materia(
+      nome: _nomeController.text,
+      dataInsert: DateTime.now(),
+      isLastSelected: false,
+    );
+
+    await Materia.insertMateria(novaMateria);
+    Navigator.pop(context, true); // Retorna à tela anterior e sinaliza para recarregar a lista
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,6 +70,7 @@ class _AddMarkerPageState extends State<AddMarkerPage> {
         child: Column(
           children: [
             TextField(
+              controller: _nomeController,
               decoration: InputDecoration(
                 labelText: 'Nome da Matéria',
                 border: OutlineInputBorder(),
@@ -77,9 +98,7 @@ class _AddMarkerPageState extends State<AddMarkerPage> {
             ),
             SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {
-                // Ação para adicionar o marcador com o nome e os horários selecionados
-              },
+              onPressed: _addMateria,
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.teal,
                 padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
