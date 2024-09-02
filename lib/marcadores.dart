@@ -1,7 +1,27 @@
 import 'package:flutter/material.dart';
-import 'adicionar_marcadores.dart'; // Importa a tela de adicionar marcadores
+import 'models/materia.dart'; // Importe o modelo de matéria
+import 'adicionar_marcadores.dart'; // Importe a tela de adicionar marcadores
 
-class MarkersPage extends StatelessWidget {
+class MarkersPage extends StatefulWidget {
+  @override
+  _MarkersPageState createState() => _MarkersPageState();
+}
+
+class _MarkersPageState extends State<MarkersPage> {
+  late Future<List<Materia>> _materias;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadMaterias();
+  }
+
+  void _loadMaterias() {
+    setState(() {
+      _materias = Materia.getMaterias();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,48 +37,43 @@ class MarkersPage extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: ListView(
-          children: [
-            MarkerItem(
-              color: Colors.blue,
-              subject: 'ESTRUTURA DE DADOS',
-              time: '00:00',
-            ),
-            MarkerItem(
-              color: Colors.orange,
-              subject: 'DIREITO CONSTITUCIONAL',
-              time: '00:00',
-            ),
-            MarkerItem(
-              color: Colors.brown,
-              subject: 'REDES DE COMPUTADORES',
-              time: '00:00',
-            ),
-            MarkerItem(
-              color: Colors.purple,
-              subject: 'DIREITO PENAL',
-              time: '00:00',
-            ),
-            MarkerItem(
-              color: Colors.green,
-              subject: 'DIREITO ADMINISTRATIVO',
-              time: '00:00',
-            ),
-            MarkerItem(
-              color: Colors.yellow,
-              subject: 'PORTUGUÊS',
-              time: '00:00',
-            ),
-          ],
+        child: FutureBuilder<List<Materia>>(
+          future: _materias,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Center(child: Text('Erro ao carregar as matérias'));
+            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              return Center(child: Text('Nenhuma matéria adicionada ainda.'));
+            }
+
+            final materias = snapshot.data!;
+
+            return ListView.builder(
+              itemCount: materias.length,
+              itemBuilder: (context, index) {
+                final materia = materias[index];
+                return MarkerItem(
+                  color: Colors.blue, // Use a cor apropriada se disponível
+                  subject: materia.nome,
+                  time: '00:00', // Pode ser ajustado conforme necessário
+                );
+              },
+            );
+          },
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Navegar para a tela de adicionar marcador
-          Navigator.push(
+        onPressed: () async {
+          // Navegar para a tela de adicionar marcador e recarregar a lista ao retornar
+          final result = await Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => AddMarkerPage()),
           );
+          if (result == true) {
+            _loadMaterias();
+          }
         },
         child: Icon(Icons.add),
         backgroundColor: Colors.teal,
