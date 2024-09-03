@@ -14,7 +14,6 @@ class _LoginPageState extends State<LoginPage> {
   String _email = '';
 
   Future<void> _login() async {
-
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       List<Usuario> usuarios = await Usuario.getUsuarios();
@@ -39,15 +38,34 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Login')),
+      backgroundColor: Colors.white,
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              CircleAvatar(
+                radius: 50,
+                backgroundColor: Colors.grey.shade200,
+                child: Icon(
+                  Icons.person,
+                  size: 80,
+                  color: Colors.grey.shade400,
+                ),
+              ),
+              SizedBox(height: 40),
               TextFormField(
-                decoration: InputDecoration(labelText: 'Email'),
+                decoration: InputDecoration(
+                  labelText: 'Email',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                    borderSide: BorderSide(
+                      color: Colors.blue,
+                    ),
+                  ),
+                ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Por favor, insira seu email';
@@ -59,13 +77,21 @@ class _LoginPageState extends State<LoginPage> {
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _login,
-                child: Text('Entrar'),
+                style: ElevatedButton.styleFrom(
+                  padding: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                  ),
+                  backgroundColor: Colors.blue,
+                ),
+                child: Text('Log In'),
               ),
+              SizedBox(height: 20),
               TextButton(
                 onPressed: () {
                   Navigator.pushNamed(context, '/register');
                 },
-                child: Text('Registrar-se'),
+                child: Text('Registre-se aqui'),
               ),
             ],
           ),
