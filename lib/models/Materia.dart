@@ -37,21 +37,6 @@ class Materia {
     );
   }
 
-  static Future<Materia?> getMateriaLastSelected() async {
-    final Database db = await getDataBase();
-    final List<Map<String, dynamic>> maps = await db.query(
-      'Materia',
-      where: 'isLastSelected = ?',
-      whereArgs: [1], // 1 represents true in SQLite
-    );
-
-    if (maps.isNotEmpty) {
-      return Materia.fromMap(maps.first);
-    } else {
-      return null; // No record found
-    }
-  }
-
   static Future<Materia?> getMateriaById(int id) async {
     final Database db = await getDataBase();
     final List<Map<String, dynamic>> maps = await db.query(
@@ -99,4 +84,21 @@ class Materia {
       whereArgs: [id],
     );
   }
+
+  //SPECIAL METHODS
+  static Future<Materia?> getMateriaLastSelected() async {
+    final Database db = await getDataBase();
+    final List<Map<String, dynamic>> maps = await db.query(
+      'Materia',
+      where: 'isLastSelected = ?',
+      whereArgs: [1], // 1 represents true in SQLite
+    );
+
+    if (maps.isNotEmpty) {
+      return Materia.fromMap(maps.first);
+    } else {
+      return null; // No record found
+    }
+  }
+
 }
