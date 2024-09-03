@@ -207,7 +207,7 @@ class _StudyHomePageState extends State<StudyHomePage> {
                 ),
                 child: ClipOval(
                   child: Image.asset(
-                    'assets/brain.gif',
+                    'lib/assets/brain.gif',
                     fit: BoxFit.cover,
                   ),
                 ),
