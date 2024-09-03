@@ -7,7 +7,6 @@ import 'package:sqflite/sqflite.dart';
 import 'marcadores.dart';
 import 'tela_login.dart';
 import 'tela_registro.dart';
-import 'home.dart';
 import 'user_manager.dart'; // Importar UserManager
 
 void main() {
