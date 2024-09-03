@@ -153,9 +153,12 @@ class _StudyHomePageState extends State<StudyHomePage> {
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.green),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => LoginPage()),
+              );
+            }
         ),
         title: Text('Title'),
         centerTitle: true,
