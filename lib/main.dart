@@ -207,7 +207,9 @@ class _StudyHomePageState extends State<StudyHomePage> {
                 ),
                 child: ClipOval(
                   child: Image.asset(
-                    'lib/assets/brain.gif',
+                    status == 'iniciado' || status == 'continuado'
+                        ? 'lib/assets/brain.gif'
+                        : 'lib/assets/brain_statico.png',
                     fit: BoxFit.cover,
                   ),
                 ),
