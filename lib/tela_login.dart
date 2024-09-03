@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:sinapse/database.dart';
+import 'models/Materia.dart';
 import 'models/Usuario.dart';
 import 'user_manager.dart';
 
@@ -12,6 +14,7 @@ class _LoginPageState extends State<LoginPage> {
   String _email = '';
 
   Future<void> _login() async {
+
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       List<Usuario> usuarios = await Usuario.getUsuarios();

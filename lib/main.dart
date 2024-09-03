@@ -7,7 +7,6 @@ import 'package:sqflite/sqflite.dart';
 import 'marcadores.dart';
 import 'tela_login.dart';
 import 'tela_registro.dart';
-import 'home.dart';
 import 'user_manager.dart'; // Importar UserManager
 
 void main() {
@@ -44,6 +43,7 @@ class StudyHomePage extends StatefulWidget {
 
 class _StudyHomePageState extends State<StudyHomePage> {
   Materia? materia;
+
   SessaoMateria? sessaoMateria;
   DateTime? cronometro = DateTime(0, 0, 0, 0, 0, 0);
   Timer? _timer;
@@ -214,18 +214,18 @@ class _StudyHomePageState extends State<StudyHomePage> {
                   color: Colors.grey[300],
                   borderRadius: BorderRadius.circular(20),
                 ),
-                child: DropdownButton<Materia>(
-                  value: materia,
+                child: DropdownButton<int>(
+                  value: materia?.id,
                   hint: Text('Escolher Matéria'),
-                  onChanged: (Materia? newMateria) {
+                  onChanged: (int? idMateria) async {
+                    Materia? selectedMateria = await Materia.getMateriaById(idMateria!);
                     setState(() {
-                      materia = newMateria;
+                      materia = selectedMateria;
                     });
-                    startCounter();
                   },
                   items: materias.map((Materia materia) {
-                    return DropdownMenuItem<Materia>(
-                      value: materia,
+                    return DropdownMenuItem<int>(
+                      value: materia.id,
                       child: Row(
                         children: [
                           Icon(Icons.circle, color: Colors.blue, size: 12),
