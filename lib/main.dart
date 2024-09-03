@@ -166,11 +166,13 @@ class _StudyHomePageState extends State<StudyHomePage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => MarkersPage()),
-              ).then((selectedMateria) {
+              ).then((selectedMateria) async {
+                // Recarregar as matérias ao retornar
+                materias = await Materia.getMaterias();
+                setState(() {
+                  materia = selectedMateria;
+                });
                 if (selectedMateria != null) {
-                  setState(() {
-                    materia = selectedMateria;
-                  });
                   startCounter();
                 }
               });

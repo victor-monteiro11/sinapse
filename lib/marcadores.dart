@@ -22,6 +22,11 @@ class _MarkersPageState extends State<MarkersPage> {
     });
   }
 
+  void _deleteMateria(int id) async {
+    await Materia.deleteMateria(id);
+    _loadMaterias();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,7 +62,10 @@ class _MarkersPageState extends State<MarkersPage> {
                 return MarkerItem(
                   color: Colors.blue, // Use a cor apropriada se disponível
                   subject: materia.nome,
-                  time: '00:00', // Pode ser ajustado conforme necessário
+                  onDelete: () => _deleteMateria(materia.id!),
+                  onStart: () {
+                    Navigator.pop(context, materia);
+                  },
                 );
               },
             );
@@ -66,7 +74,6 @@ class _MarkersPageState extends State<MarkersPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          // Navegar para a tela de adicionar marcador e recarregar a lista ao retornar
           final result = await Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => AddMarkerPage()),
@@ -85,12 +92,14 @@ class _MarkersPageState extends State<MarkersPage> {
 class MarkerItem extends StatelessWidget {
   final Color color;
   final String subject;
-  final String time;
+  final VoidCallback onDelete;
+  final VoidCallback onStart;
 
   const MarkerItem({
     required this.color,
     required this.subject,
-    required this.time,
+    required this.onDelete,
+    required this.onStart,
   });
 
   @override
@@ -112,9 +121,7 @@ class MarkerItem extends StatelessWidget {
             ),
           ),
           TextButton(
-            onPressed: () {
-              Navigator.pop(context, Materia); // Passa a matéria selecionada para a tela inicial
-            },
+            onPressed: onStart,
             style: TextButton.styleFrom(
               backgroundColor: Colors.grey[300],
               shape: RoundedRectangleBorder(
@@ -127,11 +134,17 @@ class MarkerItem extends StatelessWidget {
             ),
           ),
           SizedBox(width: 10),
-          Text(
-            time,
-            style: TextStyle(
-              fontSize: 16,
-              color: Colors.grey[700],
+          TextButton(
+            onPressed: onDelete,
+            style: TextButton.styleFrom(
+              backgroundColor: Colors.red[300],
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+            ),
+            child: Text(
+              'DEL',
+              style: TextStyle(color: Colors.white),
             ),
           ),
         ],
