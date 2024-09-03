@@ -113,7 +113,7 @@ class MarkerItem extends StatelessWidget {
           ),
           TextButton(
             onPressed: () {
-              // Ação para iniciar o tempo e ir para a tela de início
+              Navigator.pop(context, Materia); // Passa a matéria selecionada para a tela inicial
             },
             style: TextButton.styleFrom(
               backgroundColor: Colors.grey[300],
