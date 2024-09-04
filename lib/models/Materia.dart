@@ -1,4 +1,7 @@
+import 'dart:ui';
+import 'dart:math' as math;
 import 'package:sqflite/sqflite.dart';
+
 
 import '../database.dart';
 
@@ -7,6 +10,9 @@ class Materia {
   String nome;
   DateTime dataInsert;
   bool isLastSelected;
+  Color cor = Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0);
+
+
 
   Materia({this.id, required this.nome, required this.dataInsert, this.isLastSelected = false});
 
