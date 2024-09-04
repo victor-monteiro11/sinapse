@@ -58,7 +58,7 @@ class _LoginPageState extends State<LoginPage> {
               SizedBox(height: 40),
               TextFormField(
                 decoration: InputDecoration(
-                  labelText: 'Email',
+                  labelText: 'E-mail',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(30.0),
                     borderSide: BorderSide(
@@ -78,20 +78,24 @@ class _LoginPageState extends State<LoginPage> {
               ElevatedButton(
                 onPressed: _login,
                 style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+                  padding: EdgeInsets.symmetric(horizontal: 80, vertical: 15),
+                  side: BorderSide(color: Colors.teal, width: 2),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30.0),
                   ),
-                  backgroundColor: Colors.blue,
+
+                  backgroundColor: Colors.teal,
                 ),
-                child: Text('Log In'),
-              ),
+                child: Text('Log In',
+                  style: TextStyle(fontSize: 18, color: Colors.white),
+                  ),),
               SizedBox(height: 20),
               TextButton(
                 onPressed: () {
                   Navigator.pushNamed(context, '/register');
                 },
-                child: Text('Registre-se aqui'),
+                child: Text('Registre-se aqui',
+                  style: TextStyle(fontSize: 18, color: Colors.blueGrey),),
               ),
             ],
           ),

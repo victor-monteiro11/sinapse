@@ -264,7 +264,7 @@ class _StudyHomePageState extends State<StudyHomePage> {
                 ),
                 child: DropdownButton<int>(
                   value: materia?.id,
-                  hint: Text('Escolher Matéria'),
+                  hint: Text('Selecionar Matéria'),
                   onChanged: (int? idMateria) async {
                     Materia? selectedMateria = await Materia.getMateriaById(idMateria!);
                     setState(() {
@@ -298,6 +298,7 @@ class _StudyHomePageState extends State<StudyHomePage> {
                 ),
               ),
               SizedBox(height: 20),
+
               ElevatedButton(
                 onPressed: () async {
                   if (status == '' || status == 'parado') {
@@ -312,9 +313,11 @@ class _StudyHomePageState extends State<StudyHomePage> {
                   padding: EdgeInsets.symmetric(horizontal: 60, vertical: 15),
                   backgroundColor: Colors.teal,
                 ),
-                child: Text(
-                  'Começar Sinapse',
-                  style: TextStyle(fontSize: 18),
+                child:
+
+                Text(
+                  ' Iniciar :: Parar',
+                  style: TextStyle(fontSize: 18, color: Colors.white),
                 ),
               ),
               SizedBox(height: 10),
@@ -331,7 +334,7 @@ class _StudyHomePageState extends State<StudyHomePage> {
                   side: BorderSide(color: Colors.teal, width: 2),
                 ),
                 child: Text(
-                  'Sair',
+                  '    Sair      ',
                   style: TextStyle(fontSize: 18, color: Colors.teal),
                 ),
               ),
