@@ -161,7 +161,7 @@ class _StudyHomePageState extends State<StudyHomePage> {
               );
             }
         ),
-        title: Text('Title'),
+        title: Text('Sinapse'),
         centerTitle: true,
         actions: [
           Builder(
@@ -180,15 +180,20 @@ class _StudyHomePageState extends State<StudyHomePage> {
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.teal,
-              ),
-              child: Text(
-                'Menu',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
+            Container(
+              height: 100,
+              child: DrawerHeader(
+                decoration: BoxDecoration(
+                  color: Colors.teal,
+                ),
+                child: Center(
+                  child: Text(
+                    'Menu',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20, // Tamanho da fonte reduzido
+                    ),
+                  ),
                 ),
               ),
             ),
