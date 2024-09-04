@@ -191,7 +191,7 @@ class _StudyHomePageState extends State<StudyHomePage> {
                     'Menu',
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 20, // Tamanho da fonte reduzido
+                      fontSize: 20,
                     ),
                   ),
                 ),
