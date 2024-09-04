@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'chart.dart';
 import 'models/Usuario.dart';
 import 'models/Materia.dart';
 import 'models/SessaoMateria.dart';
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
         '/login': (context) => LoginPage(),
         '/register': (context) => RegisterPage(),
         '/home': (context) => StudyHomePage(),
+        '/chart': (context) => PieChartPage(),
       },
     );
   }
@@ -155,9 +157,13 @@ class _StudyHomePageState extends State<StudyHomePage> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.green),
             onPressed: () {
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(builder: (context) => LoginPage()),
+              // );
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => LoginPage()),
+                MaterialPageRoute(builder: (context) => PieChartPage()),
               );
             }
         ),
