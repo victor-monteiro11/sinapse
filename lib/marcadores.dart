@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'models/materia.dart'; // Importe o modelo de matéria
 import 'adicionar_marcadores.dart'; // Importe a tela de adicionar marcadores
 
+
 class MarkersPage extends StatefulWidget {
   @override
   _MarkersPageState createState() => _MarkersPageState();
@@ -64,7 +65,7 @@ class _MarkersPageState extends State<MarkersPage> {
                   subject: materia.nome,
                   onDelete: () => _deleteMateria(materia.id!),
                   onStart: () {
-                    Navigator.pop(context, materia);
+                    Navigator.of(context).pushNamed('/home');
                   },
                 );
               },

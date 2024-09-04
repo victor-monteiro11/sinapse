@@ -8,6 +8,7 @@ import 'marcadores.dart';
 import 'tela_login.dart';
 import 'tela_registro.dart';
 import 'user_manager.dart'; // Importar UserManager
+import 'chart.dart';
 
 void main() {
   runApp(MyApp());
@@ -163,25 +164,65 @@ class _StudyHomePageState extends State<StudyHomePage> {
         title: Text('Title'),
         centerTitle: true,
         actions: [
-          IconButton(
-            icon: Icon(Icons.menu),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => MarkersPage()),
-              ).then((selectedMateria) async {
-                // Recarregar as matérias ao retornar
-                materias = await Materia.getMaterias();
-                setState(() {
-                  materia = selectedMateria;
-                });
-                if (selectedMateria != null) {
-                  startCounter();
-                }
-              });
+          Builder(
+            builder: (context) {
+              return IconButton(
+                icon: Icon(Icons.menu),
+                onPressed: () {
+                  Scaffold.of(context).openEndDrawer();
+                },
+              );
             },
           ),
         ],
+      ),
+      endDrawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.teal,
+              ),
+              child: Text(
+                'Menu',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                ),
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.book),
+              title: Text('Matérias'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MarkersPage()),
+                ).then((selectedMateria) async {
+                  // Recarregar as matérias ao retornar
+                  materias = await Materia.getMaterias();
+                  setState(() {
+                    materia = selectedMateria;
+                  });
+                  if (selectedMateria != null) {
+                    startCounter();
+                  }
+                });
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.bar_chart),
+              title: Text('Chart'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ChartPage()),
+                );
+              },
+            ),
+          ],
+        ),
       ),
       body: Center(
         child: Padding(
