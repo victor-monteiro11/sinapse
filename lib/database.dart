@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
+
 import '/models/Materia.dart';
 import '/models/SessaoMateria.dart';
 import '/models/Usuario.dart';
@@ -29,7 +31,8 @@ Future<void> _onCreate(Database db, int version) async {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         nome TEXT NOT NULL,
         dataInsert TEXT NOT NULL,
-        isLastSelected INTEGER NOT NULL DEFAULT 0
+        isLastSelected INTEGER NOT NULL DEFAULT 0,
+        cor TEXT
       )
     ''');
 
@@ -74,10 +77,10 @@ Future<void> testCRUD () async {
   await Usuario.insertUsuario(usuario2);
   await Usuario.insertUsuario(usuario3);
 
-  var materia1 = Materia(nome: 'Mathematics', dataInsert: DateTime.parse('2024-09-01T10:00:00Z'));
-  var materia2 = Materia(nome: 'Science', dataInsert: DateTime.parse('2024-09-01T11:00:00Z'), isLastSelected: true);
-  var materia3 = Materia(nome: 'Portugues', dataInsert: DateTime.parse('2024-10-01T10:00:00Z'));
-  var materia4 = Materia(nome: 'Direito', dataInsert: DateTime.parse('2023-09-01T11:00:00Z'));
+  var materia1 = Materia(nome: 'Mathematics', dataInsert: DateTime.parse('2024-09-01T10:00:00Z'), cor: Colors.blue);
+  var materia2 = Materia(nome: 'Science', dataInsert: DateTime.parse('2024-09-01T11:00:00Z'), isLastSelected: true, cor: Colors.red);
+  var materia3 = Materia(nome: 'Portugues', dataInsert: DateTime.parse('2024-10-01T10:00:00Z'), cor: Colors.black);
+  var materia4 = Materia(nome: 'Direito', dataInsert: DateTime.parse('2023-09-01T11:00:00Z'), cor: Colors.cyan);
   await Materia.insertMateria(materia1);
   await Materia.insertMateria(materia2);
   await Materia.insertMateria(materia3);
@@ -88,8 +91,8 @@ Future<void> testCRUD () async {
     endTime: DateTime.parse('2024-09-01T13:00:00Z'),
     quality: 5,
     idle: false,
-    idUsuario: 1,
-    idMateria: 2,
+    idUsuario: 2,
+    idMateria: 1
   );
   await SessaoMateria.insertSessaoMateria(sessao1);
 

@@ -141,6 +141,8 @@ class SessaoMateria {
       }
     }
 
+
+
     // // Now, you have a map where each key is an idMateria and the value is a list of SessaoMateria objects with that idMateria
     // groupedByMateria.forEach((materia, sessoesList) {
     //   var nome = materia.nome;
@@ -161,6 +163,20 @@ class SessaoMateria {
           sessao.startTime.month == date.month &&
           sessao.startTime.day == date.day;
     }).toList();
+  }
+
+  //Retorna lista de Materias em ordem decrescente de tempo
+  static Future<Map<Materia, Duration>> orderByDecreasing (Map<Materia, Duration> groupedSessoes) async {
+    // Convert the map to a list of entries (key-value pairs)
+    List<MapEntry<Materia, Duration>> entries = groupedSessoes.entries.toList();
+
+    // Sort the list in-place based on the duration in descending order
+    entries.sort((a, b) => b.value.compareTo(a.value));
+
+    // Convert the sorted list back to a map
+    Map<Materia, Duration> sortedMap = Map.fromEntries(entries);
+
+    return sortedMap;
   }
 
   //Retorna lista de Sessões do dia passado como parâmetro

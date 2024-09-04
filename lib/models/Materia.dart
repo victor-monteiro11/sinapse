@@ -4,17 +4,18 @@ import 'package:sqflite/sqflite.dart';
 
 
 import '../database.dart';
+import 'Cores.dart';
 
 class Materia {
   int ?id;
   String nome;
   DateTime dataInsert;
   bool isLastSelected;
-  Color cor = Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0);
+  Color ?cor;
 
 
 
-  Materia({this.id, required this.nome, required this.dataInsert, this.isLastSelected = false});
+  Materia({this.id, required this.nome, required this.dataInsert, this.isLastSelected = false, this.cor});
 
   Map<String, dynamic> toMap() {
     return {
@@ -22,6 +23,7 @@ class Materia {
       'nome': nome,
       'dataInsert': dataInsert.toIso8601String(),
       'isLastSelected': isLastSelected ? 1 : 0,
+      'cor': cor != null ? Cores.getHexFromColor(cor!) : null,
     };
   }
 
@@ -31,6 +33,7 @@ class Materia {
       nome: map['nome'],
       dataInsert: DateTime.parse(map['dataInsert']),
       isLastSelected: map['isLastSelected'] == 1,
+      cor: map['cor'] != null ? Cores.getColorFromHex(map['cor']) : Cores.getRandomColor(),
     );
   }
 
@@ -38,8 +41,13 @@ class Materia {
   static Future<void> insertMateria(Materia materia) async {
     final Database db = await getDataBase();
     await db.rawInsert(
-      'INSERT INTO Materia (nome, dataInsert, isLastSelected) VALUES (?, ?, ?)',
-      [materia.nome, materia.dataInsert.toIso8601String(), materia.isLastSelected ? 1 : 0],
+      'INSERT INTO Materia (nome, dataInsert, isLastSelected, cor) VALUES (?, ?, ?, ?)',
+      [
+        materia.nome,
+        materia.dataInsert.toIso8601String(),
+        materia.isLastSelected ? 1 : 0,
+        materia.cor != null ? Cores.getHexFromColor(materia.cor!) : null,
+      ],
     );
   }
 
@@ -71,11 +79,12 @@ class Materia {
     final db = await getDataBase();
 
     await db.rawUpdate(
-      'UPDATE Materia SET nome = ?, dataInsert = ?, isLastSelected = ? WHERE id = ?',
+      'UPDATE Materia SET nome = ?, dataInsert = ?, isLastSelected = ?, cor = ? WHERE id = ?',
       [
         materia.nome,
         materia.dataInsert.toIso8601String(),
         materia.isLastSelected ? 1 : 0,
+        materia.cor != null ? Cores.getHexFromColor(materia.cor!) : null,
         materia.id,
       ],
     );

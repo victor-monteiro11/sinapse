@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:sinapse/database.dart';
 import 'chart.dart';
 import 'models/Usuario.dart';
 import 'models/Materia.dart';
@@ -228,7 +229,7 @@ class _StudyHomePageState extends State<StudyHomePage> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ChartPage()),
+                  MaterialPageRoute(builder: (context) => PieChartPage()),
                 );
               },
             ),
