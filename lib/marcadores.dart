@@ -61,7 +61,7 @@ class _MarkersPageState extends State<MarkersPage> {
               itemBuilder: (context, index) {
                 final materia = materias[index];
                 return MarkerItem(
-                  color: Colors.blue, // Use a cor apropriada se disponível
+                  color: materia.cor ?? Colors.grey,
                   subject: materia.nome,
                   onDelete: () => _deleteMateria(materia.id!),
                   onStart: () {

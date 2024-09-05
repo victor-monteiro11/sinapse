@@ -288,7 +288,7 @@ class _StudyHomePageState extends State<StudyHomePage> {
                       value: materia.id,
                       child: Row(
                         children: [
-                          Icon(Icons.circle, color: Colors.blue, size: 12),
+                          Icon(Icons.circle, color: materia.cor ?? Colors.grey, size: 12),
                           SizedBox(width: 10),
                           Text(
                             materia.nome,
