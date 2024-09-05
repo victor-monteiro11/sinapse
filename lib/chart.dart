@@ -11,6 +11,7 @@ class PieChartPage extends StatefulWidget {
 class _PieChartPageState extends State<PieChartPage> {
   Column? coluna;
   List<PieChartSectionData>? _sections;
+  
 
   @override
   void initState() {
@@ -47,7 +48,8 @@ class _PieChartPageState extends State<PieChartPage> {
       return PieChartSectionData(
         color: materia.cor,  // Replace with your desired color
         value: percentage,
-        title: percentage > 12 ? '${(percentage).toStringAsFixed(1)}%' : '',
+        // title: percentage > 12 ? '${(percentage).toStringAsFixed(1)}%' : '',
+        title: '',
         radius: 50,
         titleStyle: TextStyle(
             fontSize: 16,
@@ -71,7 +73,7 @@ class _PieChartPageState extends State<PieChartPage> {
           final double percentage = (duration.inSeconds / totalDuration.inSeconds) * 100;
 
           return Container(
-            margin: const EdgeInsets.all(16.0),
+            margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 7.0),
             padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
             decoration: BoxDecoration(
               color: materia.cor, // Background color
@@ -92,7 +94,7 @@ class _PieChartPageState extends State<PieChartPage> {
                 Text(
                   formatDuration(duration), // Convert the duration to a human-readable format
                   style: TextStyle(
-                    color: Colors.white70,
+                    color: Colors.white,
                     fontSize: 14.0,
                   ),
                 ),
@@ -129,31 +131,33 @@ class _PieChartPageState extends State<PieChartPage> {
       appBar: AppBar(
         title: Text('Pie Chart Example'),
       ),
-      body: Center(
-        child: Column(
-          children: [
-            SizedBox(height: 80),
-            Container(
-              height: 150.0,
-              width: 120.0,
-              child: _sections == null
-                  ? CircularProgressIndicator() // Show a loading indicator while data is loading
-                  : PieChart(
-                PieChartData(
-                  sections: _sections!,
-                  borderData: FlBorderData(show: false),
-                  sectionsSpace: 4,
-                  centerSpaceRadius: 40,
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            children: [
+              SizedBox(height: 80),
+              Container(
+                height: 150.0,
+                width: 120.0,
+                child: _sections == null
+                    ? CircularProgressIndicator() // Show a loading indicator while data is loading
+                    : PieChart(
+                  PieChartData(
+                    sections: _sections!,
+                    borderData: FlBorderData(show: false),
+                    sectionsSpace: 4,
+                    centerSpaceRadius: 40,
+                  ),
                 ),
               ),
-            ),
-            SizedBox(height: 80),
-            SingleChildScrollView(
-              child: coluna,
-            )
-          ],
-        ),
-        ),
+              SizedBox(height: 60),
+              SingleChildScrollView(
+                child: coluna!,
+              )
+            ],
+          ),
+          ),
+      ),
     );
   }
 }
