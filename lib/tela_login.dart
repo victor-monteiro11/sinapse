@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:sinapse/database.dart';
 import 'models/Materia.dart';
 import 'models/Usuario.dart';
+import 'database.dart';
 import 'user_manager.dart';
+
 
 class LoginPage extends StatefulWidget {
   @override

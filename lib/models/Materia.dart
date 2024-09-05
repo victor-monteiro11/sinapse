@@ -116,4 +116,23 @@ class Materia {
     }
   }
 
+  // Function to set a Materia as the last selected
+  static Future<void> setMateriaLastSelected(int id) async {
+    final Database db = await getDataBase();
+    // 1. Set isLastSelected = 0 for all Materias
+    await db.update(
+      'Materia',
+      {'isLastSelected': 0},
+      where: 'isLastSelected = 1',
+    );
+
+    // 2. Set isLastSelected = 1 for the selected Materia
+    await db.update(
+      'Materia',
+      {'isLastSelected': 1},
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
+
 }
