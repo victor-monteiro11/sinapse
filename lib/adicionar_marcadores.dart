@@ -25,7 +25,6 @@ class _AddMarkerPageState extends State<AddMarkerPage> {
       dataInsert: DateTime.now(),
       isLastSelected: false,
       cor: color,
-
     );
 
     await Materia.insertMateria(novaMateria);
@@ -42,7 +41,7 @@ class _AddMarkerPageState extends State<AddMarkerPage> {
             Navigator.pop(context);
           },
         ),
-        title: Text('Adicionar Matéria '),
+        title: Text('Adicionar Matéria'),
         centerTitle: true,
       ),
       body: Padding(
@@ -65,32 +64,33 @@ class _AddMarkerPageState extends State<AddMarkerPage> {
               ),
               child: Text(
                 'Adicionar',
-                style: TextStyle(fontSize: 18,),
+                style: TextStyle(fontSize: 18),
               ),
             ),
             SizedBox(height: 20),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Container(
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: color,
                   ),
-                  width: 50,
-                  height: 50,
+                  width: 100,
+                  height: 30,
                 ),
-                const SizedBox(height: 32,),
+                const SizedBox(width: 10),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(horizontal: 24,),
+                    padding: EdgeInsets.symmetric(horizontal: 24),
+                    backgroundColor: Colors.grey,
                   ),
                   child: Text(
                     'Adicionar Cor',
                     style: TextStyle(fontSize: 24),
                   ),
                   onPressed: () => pickColor(context),
-                )
+                ),
               ],
             ),
           ],
@@ -98,35 +98,43 @@ class _AddMarkerPageState extends State<AddMarkerPage> {
       ),
     );
   }
+
   Widget buildColorPicker() => BlockPicker(
-        pickerColor: color,
-        // enableAlpha: true,
-        availableColors:[
-          Colors.green,
-          Colors.black,
-          Colors.blue,
-          Colors.deepOrangeAccent,
-          Colors.deepPurpleAccent
-        ],
+    pickerColor: color,
+    availableColors: [
+      Colors.green,
+      Colors.black,
+      Colors.blue,
+      Colors.deepOrangeAccent,
+      Colors.deepPurpleAccent,
+      Colors.indigo,
+      Colors.pink,
+      Colors.yellowAccent,
+      Colors.lightGreenAccent,
+      Colors.black26,
+      Colors.teal,
+      Colors.brown,
+    ],
     onColorChanged: (color) => setState(() => this.color = color),
   );
-  void pickColor(BuildContext context) => showDialog(
-    context: context, builder: (context) => AlertDialog(
-    title: Text('Selecione sua cor'),
-    content: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        buildColorPicker(),
-      TextButton(
-        child: Text(
-          'SELECT',
-          style: TextStyle(fontSize: 20),
-        ),
-        onPressed: () => Navigator.of(context).pop(),
-      ),
-    ],
-  ),
-  ),
-  );
 
+  void pickColor(BuildContext context) => showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: Text('Selecione sua cor'),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          buildColorPicker(),
+          TextButton(
+            child: Text(
+              'SELECIONAR',
+              style: TextStyle(fontSize: 20),
+            ),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+        ],
+      ),
+    ),
+  );
 }
