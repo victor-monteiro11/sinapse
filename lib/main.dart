@@ -90,7 +90,6 @@ class _StudyHomePageState extends State<StudyHomePage> {
         materia = lastMateria;
       });
     }
-    
   }
 
   void _startTimer() {
