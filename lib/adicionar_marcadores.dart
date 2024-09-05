@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'models/materia.dart';
+import 'models/Cores.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 class AddMarkerPage extends StatefulWidget {
   @override
@@ -8,6 +10,7 @@ class AddMarkerPage extends StatefulWidget {
 
 class _AddMarkerPageState extends State<AddMarkerPage> {
   final TextEditingController _nomeController = TextEditingController();
+  Color color = Colors.red;
 
   Future<void> _addMateria() async {
     if (_nomeController.text.isEmpty) {
@@ -21,6 +24,8 @@ class _AddMarkerPageState extends State<AddMarkerPage> {
       nome: _nomeController.text,
       dataInsert: DateTime.now(),
       isLastSelected: false,
+      cor: color,
+
     );
 
     await Materia.insertMateria(novaMateria);
@@ -60,12 +65,68 @@ class _AddMarkerPageState extends State<AddMarkerPage> {
               ),
               child: Text(
                 'Adicionar',
-                style: TextStyle(fontSize: 18),
+                style: TextStyle(fontSize: 18,),
               ),
+            ),
+            SizedBox(height: 20),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: color,
+                  ),
+                  width: 50,
+                  height: 50,
+                ),
+                const SizedBox(height: 32,),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.symmetric(horizontal: 24,),
+                  ),
+                  child: Text(
+                    'Adicionar Cor',
+                    style: TextStyle(fontSize: 24),
+                  ),
+                  onPressed: () => pickColor(context),
+                )
+              ],
             ),
           ],
         ),
       ),
     );
   }
+  Widget buildColorPicker() => BlockPicker(
+        pickerColor: color,
+        // enableAlpha: true,
+        availableColors:[
+          Colors.green,
+          Colors.black,
+          Colors.blue,
+          Colors.deepOrangeAccent,
+          Colors.deepPurpleAccent
+        ],
+    onColorChanged: (color) => setState(() => this.color = color),
+  );
+  void pickColor(BuildContext context) => showDialog(
+    context: context, builder: (context) => AlertDialog(
+    title: Text('Selecione sua cor'),
+    content: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        buildColorPicker(),
+      TextButton(
+        child: Text(
+          'SELECT',
+          style: TextStyle(fontSize: 20),
+        ),
+        onPressed: () => Navigator.of(context).pop(),
+      ),
+    ],
+  ),
+  ),
+  );
+
 }
