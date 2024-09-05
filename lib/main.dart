@@ -11,6 +11,7 @@ import 'tela_login.dart';
 import 'tela_registro.dart';
 import 'user_manager.dart'; // Importar UserManager
 import 'chart.dart';
+import 'package:sinapse/services/local_notification_service.dart';
 
 void main() {
   runApp(MyApp());
@@ -53,10 +54,12 @@ class _StudyHomePageState extends State<StudyHomePage> {
   Timer? _timer;
   String status = '';
   List<Materia> materias = [];
+  late final LocalNotificationService _notificationService = LocalNotificationService();
 
   @override
   void initState() {
     super.initState();
+    _initializeNotificationService();
     init();
   }
 
@@ -122,6 +125,7 @@ class _StudyHomePageState extends State<StudyHomePage> {
       cronometro = DateTime(0, 0, 0, 0, 0, 0);
     });
     _startTimer();
+    _showStartTimeNotification();
   }
 
   Future<void> pauseCounter() async {
@@ -131,6 +135,7 @@ class _StudyHomePageState extends State<StudyHomePage> {
     setState(() {
       status = 'pausado';
     });
+    _showPauseNotification();
   }
 
   Future<void> unPauseCounter() async {
@@ -140,6 +145,7 @@ class _StudyHomePageState extends State<StudyHomePage> {
     setState(() {
       status = 'continuado';
     });
+    _showUnPauseNotification();
   }
 
   Future<void> stopCounter() async {
@@ -149,6 +155,50 @@ class _StudyHomePageState extends State<StudyHomePage> {
     setState(() {
       status = 'parado';
     });
+    _showStopNotification();
+  }
+
+  Future<void> _initializeNotificationService() async {
+    await _notificationService.initialize();
+  }
+
+  void _showStartTimeNotification() {
+    _notificationService.showNotification(
+      id: 1,
+      title: 'Cronômetro Iniciado',
+      body: 'O cronômetro foi iniciado',
+    );
+  }
+  void _showPauseNotification() {
+     _notificationService.showNotification(
+      id: 2,
+      title: 'Cronômetro Pausado',
+      body: 'O cronômetro foi pausado',
+    );
+  }
+  void _showUnPauseNotification() {
+    _notificationService.showNotification(
+      id: 2,
+      title: 'Cronômetro Reiniciado',
+      body: 'O cronômetro foi reiniciado',
+    );
+  }
+
+  void _showStopNotification() {
+    final formattedTime = '${DateTime.now().hour}:${DateTime.now().minute}';
+    _notificationService.showNotification(
+      id: 3,
+      title: 'Cronômetro Parado',
+      body: 'O cronômetro foi parado às $formattedTime',
+    );
+  }
+
+  void _showEndTimeNotification() {
+    _notificationService.showNotification(
+      id: 2,
+      title: 'Horário de saída configurado',
+      body: 'Horário de saída configurado para ',
+    );
   }
 
   @override
