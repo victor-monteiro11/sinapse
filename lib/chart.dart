@@ -11,7 +11,8 @@ class PieChartPage extends StatefulWidget {
 class _PieChartPageState extends State<PieChartPage> {
   Column? coluna;
   List<PieChartSectionData>? _sections;
-  
+  bool carregando = true;
+
 
   @override
   void initState() {
@@ -113,6 +114,7 @@ class _PieChartPageState extends State<PieChartPage> {
       );
       setState(() {
         coluna = colunaFuncVar;
+        carregando = false;
       });
 
   }
@@ -133,7 +135,7 @@ class _PieChartPageState extends State<PieChartPage> {
       ),
       body: SingleChildScrollView(
         child: Center(
-          child: Column(
+          child: carregando ?  CircularProgressIndicator() : Column(
             children: [
               SizedBox(height: 80),
               Container(
