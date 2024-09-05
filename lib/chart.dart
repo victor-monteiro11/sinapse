@@ -131,7 +131,7 @@ class _PieChartPageState extends State<PieChartPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Pie Chart Example'),
+        title: Text('Sinapses Realizadas'),
       ),
       body: SingleChildScrollView(
         child: Center(

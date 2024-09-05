@@ -55,18 +55,7 @@ class _AddMarkerPageState extends State<AddMarkerPage> {
                 border: OutlineInputBorder(),
               ),
             ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _addMateria,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.teal,
-                padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-              ),
-              child: Text(
-                'Adicionar',
-                style: TextStyle(fontSize: 18, color: Colors.white),
-              ),
-            ),
+
             SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -80,18 +69,32 @@ class _AddMarkerPageState extends State<AddMarkerPage> {
                   height: 30,
                 ),
                 const SizedBox(width: 10),
+
+
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(horizontal: 24),
-                    backgroundColor: Colors.grey,
+                        backgroundColor: Colors.teal,
+                        padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15)
                   ),
                   child: Text(
-                    'Adicionar Cor',
-                    style: TextStyle(fontSize: 24),
+                    '       Adicionar Cor   ',
+                    style: TextStyle(fontSize: 18, color: Colors.white),
                   ),
                   onPressed: () => pickColor(context),
                 ),
               ],
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: _addMateria,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.teal,
+                padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+              ),
+              child: Text(
+                '           Adicionar Matéria              ',
+                style: TextStyle(fontSize: 18, color: Colors.white),
+              ),
             ),
           ],
         ),

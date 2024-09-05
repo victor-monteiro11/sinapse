@@ -290,7 +290,7 @@ class _StudyHomePageState extends State<StudyHomePage> {
             ),
             ListTile(
               leading: Icon(Icons.bar_chart),
-              title: Text('Chart'),
+              title: Text('Sinapses Realizadas'),
               onTap: () {
                 Navigator.push(
                   context,
