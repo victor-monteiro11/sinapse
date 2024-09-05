@@ -212,6 +212,13 @@ class SessaoMateria {
     return totalTimeByMateria;
   }
 
+  // Insert de lista de materias
+  static Future<void> insertSessoes (List<SessaoMateria> sessoes) async {
+    for (SessaoMateria sessao in sessoes) {
+      await insertSessaoMateria(sessao);
+    }
+  }
+
 
 
 }

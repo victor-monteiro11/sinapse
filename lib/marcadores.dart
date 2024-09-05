@@ -10,6 +10,7 @@ class MarkersPage extends StatefulWidget {
 
 class _MarkersPageState extends State<MarkersPage> {
   late Future<List<Materia>> _materias;
+  late Materia _materia;
 
   @override
   void initState() {
@@ -65,6 +66,7 @@ class _MarkersPageState extends State<MarkersPage> {
                   subject: materia.nome,
                   onDelete: () => _deleteMateria(materia.id!),
                   onStart: () {
+
                     Navigator.of(context).pushNamed('/home');
                   },
                 );

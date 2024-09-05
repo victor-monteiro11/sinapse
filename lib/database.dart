@@ -10,14 +10,17 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 
+Future<void> deleteThisDatabase() async {
+  deleteDatabase(join(await getDatabasesPath(),'sinapse.db'));
+}
 
 Future<Database> getDataBase() async {
-  final database = await openDatabase(join(await getDatabasesPath(),'sinapse.db'), onCreate: _onCreate, version: 1);
+  final database = await openDatabase(join(await getDatabasesPath(),'sinapse.db'), onCreate: await createDatabase, version: 1);
   database.execute('PRAGMA foreign_keys = ON');
   return database;
 }
 
-Future<void> _onCreate(Database db, int version) async {
+Future<void> createDatabase(Database db, int version) async {
   await db.execute('''
       CREATE TABLE Usuario (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -49,6 +52,7 @@ Future<void> _onCreate(Database db, int version) async {
         FOREIGN KEY (idMateria) REFERENCES Materia(id) ON DELETE CASCADE
       )
     ''');
+  print('criado');
 }
 
 Future<void> dropTables() async {
@@ -56,6 +60,7 @@ Future<void> dropTables() async {
   await db.execute("DROP TABLE IF EXISTS SessaoMateria");
   await db.execute("DROP TABLE IF EXISTS Usuario");
   await db.execute("DROP TABLE IF EXISTS Materia");
+  print('deletado');
 
 }
 
@@ -69,7 +74,7 @@ Future<void> dropTables() async {
 Future<void> testCRUD () async {
   final Database db = await getDataBase();
   await dropTables();
-  await _onCreate(db, 1);
+  await createDatabase(db, 1);
   var usuario1 = Usuario(nome: 'Alice', email: 'alice@example.com');
   var usuario2 = Usuario(nome: 'Bob', email: 'bob@example.com');
   var usuario3 = Usuario(nome: 'Rodrigo', email: 'digas@example.com');

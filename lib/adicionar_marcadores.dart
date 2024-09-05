@@ -34,7 +34,7 @@ class _AddMarkerPageState extends State<AddMarkerPage> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.green),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.pop(context, true);
           },
         ),
         title: Text('Adicionar Matéria '),
@@ -60,7 +60,7 @@ class _AddMarkerPageState extends State<AddMarkerPage> {
               ),
               child: Text(
                 'Adicionar',
-                style: TextStyle(fontSize: 18),
+                style: TextStyle(fontSize: 18, color: Colors.white),
               ),
             ),
           ],

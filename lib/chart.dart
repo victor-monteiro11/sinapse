@@ -43,7 +43,7 @@ class _PieChartPageState extends State<PieChartPage> {
       // Calculate the percentage
       final double percentage = duration.inSeconds / totalDuration.inSeconds * 100;
 
-      //
+
       return PieChartSectionData(
         color: materia.cor,  // Replace with your desired color
         value: percentage,
@@ -151,43 +151,6 @@ class _PieChartPageState extends State<PieChartPage> {
             SingleChildScrollView(
               child: coluna,
             )
-            // Container(
-            //   margin: const EdgeInsets.all(16.0),
-            //   padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
-            //   decoration: BoxDecoration(
-            //     color: Colors.blueGrey, // Background color
-            //     borderRadius: BorderRadius.circular(8.0), // Rounded corners
-            //   ),
-            //   child: Row(
-            //     children: [
-            //       const SizedBox(width: 8.0), // Space between icon and text
-            //       Expanded(
-            //         child: Text(
-            //           'nome materia',
-            //           style: TextStyle(
-            //             color: Colors.white,
-            //             fontSize: 16.0,
-            //           ),
-            //         ),
-            //       ),
-            //       Text(
-            //         'tempo gasto',
-            //         style: TextStyle(
-            //           color: Colors.white70,
-            //           fontSize: 14.0,
-            //         ),
-            //       ),
-            //       const SizedBox(width: 8.0), // Space between time and percentage
-            //       Text(
-            //         'porcentagem do tempo total',
-            //         style: TextStyle(
-            //           color: Colors.white70,
-            //           fontSize: 14.0,
-            //         ),
-            //       ),
-            //     ],
-            //   ),
-            // )
           ],
         ),
         ),

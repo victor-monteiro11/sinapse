@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:sinapse/database.dart';
+import 'adicionar_marcadores.dart';
 import 'chart.dart';
 import 'models/Usuario.dart';
 import 'models/Materia.dart';
@@ -31,6 +32,8 @@ class MyApp extends StatelessWidget {
         '/register': (context) => RegisterPage(),
         '/home': (context) => StudyHomePage(),
         '/chart': (context) => PieChartPage(),
+        '/marcadores': (context) => MarkersPage(),
+        '/adicionar_marcadores': (context) => AddMarkerPage(),
       },
     );
   }
@@ -53,6 +56,8 @@ class _StudyHomePageState extends State<StudyHomePage> {
   Timer? _timer;
   String status = '';
   List<Materia> materias = [];
+  List<SessaoMateria> toBeAdded = [];
+
 
   @override
   void initState() {
@@ -62,6 +67,15 @@ class _StudyHomePageState extends State<StudyHomePage> {
 
   Future<void> init() async {
     materias = await Materia.getMaterias(); // Carrega todas as matérias
+    if (materias.isEmpty) {
+      final result = await Navigator.pushNamed(context, '/adicionar_marcadores');
+      var a = await Materia.getMaterias();
+      setState(() {
+        materias = a;
+        materia = a[0];
+      });
+
+    }
     if (widget.materia != null) {
       setState(() {
         materia = widget.materia;
@@ -109,8 +123,9 @@ class _StudyHomePageState extends State<StudyHomePage> {
     SessaoMateria? updatedSessaoMateria = sessaoMateria;
     updatedSessaoMateria?.endTime = now;
     updatedSessaoMateria?.quality = 4;
-    await SessaoMateria.insertSessaoMateria(updatedSessaoMateria!);
+    // await SessaoMateria.insertSessaoMateria(updatedSessaoMateria!);
     setState(() {
+      toBeAdded.add(updatedSessaoMateria!);
       sessaoMateria = updatedSessaoMateria;
     });
   }
@@ -158,13 +173,9 @@ class _StudyHomePageState extends State<StudyHomePage> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.green),
             onPressed: () {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(builder: (context) => LoginPage()),
-              // );
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => PieChartPage()),
+                MaterialPageRoute(builder: (context) => LoginPage()),
               );
             }
         ),
@@ -314,7 +325,9 @@ class _StudyHomePageState extends State<StudyHomePage> {
               ElevatedButton(
                 onPressed: () async {
                   if (status == '' || status == 'parado') {
-                    await startCounter();
+                    if(materia != null) {
+                      await startCounter();
+                    }
                   } else if (status == 'iniciado' || status == 'continuado') {
                     await pauseCounter();
                   } else if (status == 'pausado') {
@@ -323,12 +336,10 @@ class _StudyHomePageState extends State<StudyHomePage> {
                 },
                 style: ElevatedButton.styleFrom(
                   padding: EdgeInsets.symmetric(horizontal: 60, vertical: 15),
-                  backgroundColor: Colors.teal,
+                  backgroundColor: status == '' || status == 'parado' || status == 'pausado' ? Colors.teal : Colors.redAccent,
                 ),
-                child:
-
-                Text(
-                  ' Iniciar :: Parar',
+                child: Text(
+                  status == '' || status == 'parado' || status == 'pausado' ? '      Iniciar      ' : '      Pausar      ',
                   style: TextStyle(fontSize: 18, color: Colors.white),
                 ),
               ),
@@ -340,13 +351,74 @@ class _StudyHomePageState extends State<StudyHomePage> {
                       status == 'pausado') {
                     await stopCounter();
                   }
+
+                  if (toBeAdded.isNotEmpty) {
+
+                    await showDialog(context: context,
+                        builder: (context) {
+                      return AlertDialog(
+                        title: Text('Deseja salvar o progresso?'),
+                        actions: [
+                          TextButton(
+                              child: Text('Cancelar'),
+                              onPressed: () async {
+                                //Caminho negar
+                                print(toBeAdded);
+                                // await SessaoMateria.insertSessoes(toBeAdded);
+                                setState(() {
+                                  toBeAdded = [];
+                                });
+                                print(toBeAdded);
+                                print(await SessaoMateria.getSessoesMateria());
+                                Navigator.pop(context);
+                              }),
+                          TextButton(
+                              child: Text('Confirmar'),
+                              onPressed: () async {
+                                //Caminho aceitar
+                                print(toBeAdded);
+                                await SessaoMateria.insertSessoes(toBeAdded);
+                                setState(() {
+                                  toBeAdded = [];
+                                });
+                                print(toBeAdded);
+                                print(await SessaoMateria.getSessoesMateria());
+                                Navigator.popAndPushNamed(context, '/chart');
+                              }),
+                        ],
+                      );
+                      });
+                    setState(() {
+                      cronometro = DateTime(0, 0, 0, 0, 0, 0);
+                      status = '';
+                    });
+                  }
+
+                  //Caminho confirmar
+                  // print(toBeAdded);
+                  // await SessaoMateria.insertSessoes(toBeAdded);
+                  // setState(() {
+                  //   toBeAdded = [];
+                  // });
+                  // print(toBeAdded);
+                  // print(await SessaoMateria.getSessoesMateria());
+
+                  //Caminho negar
+                  // print(toBeAdded);
+                  // // await SessaoMateria.insertSessoes(toBeAdded);
+                  // setState(() {
+                  //   toBeAdded = [];
+                  // });
+                  // print(toBeAdded);
+                  // print(await SessaoMateria.getSessoesMateria());
+
                 },
                 style: OutlinedButton.styleFrom(
                   padding: EdgeInsets.symmetric(horizontal: 80, vertical: 15),
                   side: BorderSide(color: Colors.teal, width: 2),
                 ),
                 child: Text(
-                  '    Sair      ',
+                  'Concluir',
                   style: TextStyle(fontSize: 18, color: Colors.teal),
                 ),
               ),
