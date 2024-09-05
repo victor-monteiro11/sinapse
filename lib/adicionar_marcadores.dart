@@ -77,7 +77,7 @@ class _AddMarkerPageState extends State<AddMarkerPage> {
                         padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15)
                   ),
                   child: Text(
-                    '       Adicionar Cor   ',
+                    '   Adicionar Cor   ',
                     style: TextStyle(fontSize: 18, color: Colors.white),
                   ),
                   onPressed: () => pickColor(context),
