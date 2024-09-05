@@ -223,6 +223,10 @@ class _StudyHomePageState extends State<StudyHomePage> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.green),
             onPressed: () {
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(builder: (context) => LoginPage()),
+              // );
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => LoginPage()),
